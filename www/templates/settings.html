@@ -1,0 +1,35 @@
+<ion-view view-title="Settings Admin Punch">
+  
+   
+    <div>
+        <div class="padding">
+            <ion-content>
+                <form>
+                    <div class="list">
+                        <label class="item item-input">
+                            <span class="input-label">URL</span>
+                            <input type="text" ng-model="user.url" placeholder="{{ URL }}" ng-minlength="1">
+                        </label>
+                        <label class="item item-input"> 
+                            <span class="input-label">ENDPOINT</span>
+                            <input type="text" placeholder="{{ ENDPOINT }}" ng-model="user.endpoint" ng-minlength="1" >
+                        </label>
+
+                        <label class="item">
+                            <button   ng-disabled="!user.url || !user.endpoint"  class="button button-block button-positive" type="submit" ng-click="settingsPunch(user);loadData()">Save</button>
+                            <!--  data-ui-sref="punch_In"-->
+                        </label>
+                        
+                      
+                    </div>
+                    
+                       
+                </form>     
+            </ion-content>
+        </div> 
+        <ion-footer-bar class="bar-dark">  
+            <div class="title">Admin Punch</div>  
+        </ion-footer-bar> 
+    </div>
+    
+</ion-view>

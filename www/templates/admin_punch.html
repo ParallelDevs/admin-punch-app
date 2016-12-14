@@ -1,0 +1,24 @@
+<ion-view view-title="Punch ">
+  
+    
+    <div>
+        <div class="padding">
+            <ion-content>
+                <form ng-disabled="true">
+                     
+                    <label class="item">
+                        
+                        <button  class="button button-block button-positive"  ng-click="punch();getButton()">{{ punchValue }}</button>
+                    </label>
+
+                </form>
+            </ion-content>          
+        </div> 
+        <ion-footer-bar class="bar-dark">  
+            <div class="title">Admin Punch</div>  
+        </ion-footer-bar> 
+    </div>
+    
+</ion-view>
+
+<!-- ng-disabled="$assignState()" -->
