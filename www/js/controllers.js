@@ -4,14 +4,19 @@ var app_controllers = angular.module('drupalionic.controllers', ['drupalionic.se
 /*
 * Application Controller
 */
-app_controllers.controller('AppCtrl', function($scope, $rootScope, $ionicModal, $timeout, $ionicPopup, Account, Auth, $location, $state,$ionicHistory, punchState) {
+app_controllers.controller('AppCtrl', function($scope, $rootScope,Account, Auth, $location, $state,$ionicHistory, punchState) {
 
+    $scope.isDisabledLogin = false;
 
-  if( Auth.isLoggedIn() ){
-    $rootScope.isLoggedIn = true;
-  }else{
-    $rootScope.isLoggedIn = false;
-  }
+    if (Auth.isLoggedIn()) {
+        $rootScope.isLoggedIn = true;
+    } else {
+        $rootScope.isLoggedIn = false;
+    }
+
+    $scope.disableButtonLogin = function () {
+        $scope.isDisabledLogin = true;
+    }
 
     $scope.doLogout = function () {
         var token = Auth.getUserData('token');
@@ -49,6 +54,7 @@ app_controllers.controller('AppCtrl', function($scope, $rootScope, $ionicModal, 
 
                 //Show Alert on device
                 alert("Successfully Logged in");
+                $scope.isDisabledLogin = false; 
                 punchState.getPunchLogin(Auth.getUserData('sessid')).then(function (data) {
                     var stateValue = data;
                     localStorage.setItem('state', stateValue);
@@ -59,22 +65,18 @@ app_controllers.controller('AppCtrl', function($scope, $rootScope, $ionicModal, 
 
             }, function (data) {
                 alert("There has been an error trying to login");
+                $scope.isDisabledLogin = false; 
 
             });
         } else {
-          //  alert("Estaba logeado");
             var token = Auth.getUserData('token');
             localStorage.setItem('userData', user.username);
             localStorage.setItem('passData', user.password);
             Account.logout(token, url, endpoint).then(function () {
                 $rootScope.isLoggedIn = false;
-              //  alert("Lo desloguie");
-
-                //**********
-              //  alert("Voy a pasar a log in");
-              //  alert("llevo " + localStorage.getItem('userData') + '----' + localStorage.getItem('passData'));
+              
                 Account.login(localStorage.getItem('userData'), localStorage.getItem('passData'), url, endpoint).then(function (data) {
-              //      alert("Entre en log in");
+              //     
                     $scope.user = data;
 
                     //Saves the user data to localstorage
@@ -86,6 +88,7 @@ app_controllers.controller('AppCtrl', function($scope, $rootScope, $ionicModal, 
 
                     //Show Alert on device
                     alert("Successfully Logged in");
+                    $scope.isDisabledLogin = false; 
                     punchState.getPunchLogin(Auth.getUserData('sessid')).then(function (data) {
                         var stateValue = data;
                         localStorage.setItem('state', stateValue);
@@ -96,6 +99,7 @@ app_controllers.controller('AppCtrl', function($scope, $rootScope, $ionicModal, 
 
                 }, function (data) {
                     alert("There has been an error trying to login");
+                    $scope.isDisabledLogin = false; 
 
                 });
 
@@ -104,7 +108,6 @@ app_controllers.controller('AppCtrl', function($scope, $rootScope, $ionicModal, 
     };
 });
 
-
 /*
 * Account Controller
 */
@@ -112,13 +115,16 @@ app_controllers.controller('PunchCtrl', function ($scope, Account, Auth,punchSta
 
     $scope.toggle = true;
     
-   // $scope.$assignState = function(){
-     // $scope.punchValue =  localStorage.getItem('state');
-   //  };
-   
+    $scope.isDisabled = false;
+    
+ 
    $scope.$watch(function () {
        $scope.punchValue =  localStorage.getItem('state');
     });
+    
+    $scope.disableButton = function() {        
+            $scope.isDisabled = true; 
+    }
 
      $scope.getButton = function() {
      punchState.getPunchLogin(Auth.getUserData('sessid')).then(function(data){
@@ -138,25 +144,26 @@ app_controllers.controller('PunchCtrl', function ($scope, Account, Auth,punchSta
    );
   };
     
-    
-
     $scope.punch = function () {
         Account.getPunch(Auth.getUserData('sessid')).then(function (data) {
             Account.punch(Auth.getUserData('sessid')).then(function (data) {
                 alert("Punch successful");
+                $scope.isDisabled = false;
             }, function (data) {
                 alert("There has been an error doing the Punch. Please try again");
+                $scope.isDisabled = false;
             });
         },
                function (data) {
                     alert("An error has ocurred. Check your internet connection and try again");
+                    $scope.isDisabled = false;
                 }
         );
     };
 
 });
 
-app_controllers.controller('SettingsCtrl', function ($scope, Account, $state) {
+app_controllers.controller('SettingsCtrl', function ($scope) {
 
 
     if (localStorage.getItem('url') == null && localStorage.getItem('endpoint') == null) {

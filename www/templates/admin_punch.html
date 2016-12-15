@@ -8,7 +8,7 @@
                      
                     <label class="item">
                         
-                        <button  class="button button-block button-positive"  ng-click="punch();getButton()">{{ punchValue }}</button>
+                        <button ng-disabled="isDisabled" class="button button-block button-positive"  ng-click="punch();disableButton();getButton()">{{ punchValue }}</button>
                     </label>
 
                 </form>

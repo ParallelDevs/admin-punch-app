@@ -14,7 +14,7 @@
                         </label>
 
                         <label class="item">
-                            <button  class="button button-block button-positive" type="submit" ng-click="doLogin(user)">Log in</button>
+                            <button ng-disabled="isDisabledLogin" class="button button-block button-positive" type="submit" ng-click="doLogin(user);disableButtonLogin()">Log in</button>
                             <!--  data-ui-sref="punch_In"-->
                         </label>
                     </div>
